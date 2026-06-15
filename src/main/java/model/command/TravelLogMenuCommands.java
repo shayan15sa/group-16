@@ -1,0 +1,26 @@
+package model.command;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public enum TravelLogMenuCommands implements Command {
+    MENU_SHOW_CURRENT("^menu show current$"),
+    MENU_EXIT("^menu exit$"),
+    TRAVEL_LOG_PAGE("^travel log page\\s+(?<pageName>.+)$");
+
+    private final String pattern;
+
+    TravelLogMenuCommands(String pattern) {
+        this.pattern = pattern;
+    }
+
+    @Override
+    public Matcher getMatcher(String input) {
+        Matcher matcher = Pattern.compile(this.pattern).matcher(input);
+
+        if (matcher.matches()) {
+            return matcher;
+        }
+        return null;
+    }
+}
