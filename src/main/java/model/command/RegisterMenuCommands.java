@@ -11,19 +11,15 @@ public enum RegisterMenuCommands implements Command {
                     "\\s+-n\\s+(?<nickname>\\S+)\\s+-e\\s+(?<email>\\S+)\\s+-g\\s+(?<gender>\\S+)$"),
     PICK_QUESTION("^pick question\\s+-q\\s+(?<questionNumber>\\S+)\\s+-a\\s+(?<answer>\\S+)\\s+-c\\s+(?<answerConfirm>\\S+)$");
 
-    private final String pattern;
+    private final Pattern compiledPattern;
 
     RegisterMenuCommands(String pattern) {
-        this.pattern = pattern;
+        this.compiledPattern = Pattern.compile(pattern);
     }
 
     @Override
     public Matcher getMatcher(String input) {
-        Matcher matcher = Pattern.compile(this.pattern).matcher(input);
-
-        if (matcher.matches()) {
-            return matcher;
-        }
-        return null;
+        Matcher matcher = this.compiledPattern.matcher(input);
+        return matcher.matches() ? matcher : null;
     }
-    }
+}

@@ -15,19 +15,15 @@ public enum CollectionMenuCommands implements Command {
     UPGRADE_PLANT("^menu collection upgrade-plant\\s+-p\\s+(?<plantName>.+)$"),
     PURCHASE_PLANT("^menu collection purchase-plant\\s+-p\\s+(?<plantName>.+)$");
 
-    private final String pattern;
+    private final Pattern compiledPattern;
 
     CollectionMenuCommands(String pattern) {
-        this.pattern = pattern;
+        this.compiledPattern = Pattern.compile(pattern);
     }
 
     @Override
     public Matcher getMatcher(String input) {
-        Matcher matcher = Pattern.compile(this.pattern).matcher(input);
-
-        if (matcher.matches()) {
-            return matcher;
-        }
-        return null;
+        Matcher matcher = this.compiledPattern.matcher(input);
+        return matcher.matches() ? matcher : null;
     }
 }

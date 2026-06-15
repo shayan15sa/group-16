@@ -12,19 +12,15 @@ public enum ProfileMenuCommands implements Command {
     CHANGE_PASSWORD("^menu profile change-password\\s+-p\\s+(?<newPassword>\\S+)\\s+-o\\s+(?<oldPassword>\\S+)$"),
     SHOW_INFO("^menu profile show-info$");
 
-    private final String pattern;
+    private final Pattern compiledPattern;
 
     ProfileMenuCommands(String pattern) {
-        this.pattern = pattern;
+        this.compiledPattern = Pattern.compile(pattern);
     }
 
     @Override
     public Matcher getMatcher(String input) {
-        Matcher matcher = Pattern.compile(this.pattern).matcher(input);
-
-        if (matcher.matches()) {
-            return matcher;
-        }
-        return null;
+        Matcher matcher = this.compiledPattern.matcher(input);
+        return matcher.matches() ? matcher : null;
     }
 }

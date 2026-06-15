@@ -10,19 +10,15 @@ public enum LoginMenuCommands implements Command {
     LOGIN("^login\\s+-u\\s+(?<username>\\S+)\\s+-p\\s+(?<password>\\S+)(?:\\s+(?<stayLoggedIn>-stay-logged-in))?$"),
     FORGET_PASSWORD("^forget password\\s+-u\\s+(?<username>\\S+)\\s+-e\\s+(?<email>\\S+)\\s+-a\\s+(?<answer>.+)$");
 
-    private final String pattern;
+    private final Pattern compiledPattern;
 
     LoginMenuCommands(String pattern) {
-        this.pattern = pattern;
+        this.compiledPattern = Pattern.compile(pattern);
     }
 
     @Override
     public Matcher getMatcher(String input) {
-        Matcher matcher = Pattern.compile(this.pattern).matcher(input);
-
-        if (matcher.matches()) {
-            return matcher;
-        }
-        return null;
+        Matcher matcher = this.compiledPattern.matcher(input);
+        return matcher.matches() ? matcher : null;
     }
 }

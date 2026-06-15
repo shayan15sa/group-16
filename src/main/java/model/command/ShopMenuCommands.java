@@ -10,19 +10,15 @@ public enum ShopMenuCommands implements Command {
     SHOP_DAILY("^shop daily$"),
     SHOP_BUY("^shop buy\\s+-i\\s+(?<itemId>\\S+)\\s+-n\\s+(?<count>\\S+)(?:\\s+-t\\s+(?<plantType>.+))?$");
 
-    private final String pattern;
+    private final Pattern compiledPattern;
 
     ShopMenuCommands(String pattern) {
-        this.pattern = pattern;
+        this.compiledPattern = Pattern.compile(pattern);
     }
 
     @Override
     public Matcher getMatcher(String input) {
-        Matcher matcher = Pattern.compile(this.pattern).matcher(input);
-
-        if (matcher.matches()) {
-            return matcher;
-        }
-        return null;
+        Matcher matcher = this.compiledPattern.matcher(input);
+        return matcher.matches() ? matcher : null;
     }
 }

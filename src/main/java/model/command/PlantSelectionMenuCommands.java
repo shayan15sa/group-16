@@ -13,19 +13,15 @@ public enum PlantSelectionMenuCommands implements Command {
     BOOST_PLANT("^boost plant\\s+-t\\s+(?<type>.+)$"),
     START_GAME("^start game$");
 
-    private final String pattern;
+    private final Pattern compiledPattern;
 
     PlantSelectionMenuCommands(String pattern) {
-        this.pattern = pattern;
+        this.compiledPattern = Pattern.compile(pattern);
     }
 
     @Override
     public Matcher getMatcher(String input) {
-        Matcher matcher = Pattern.compile(this.pattern).matcher(input);
-
-        if (matcher.matches()) {
-            return matcher;
-        }
-        return null;
+        Matcher matcher = this.compiledPattern.matcher(input);
+        return matcher.matches() ? matcher : null;
     }
 }

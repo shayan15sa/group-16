@@ -8,19 +8,15 @@ public enum SettingMenuCommands implements Command {
     MENU_EXIT("^menu exit$"),
     CHANGE_DIFFICULTY("^menu settings change-difficulty\\s+-l\\s+(?<difficultyLevel>\\S+)$");
 
-    private final String pattern;
+    private final Pattern compiledPattern;
 
     SettingMenuCommands(String pattern) {
-        this.pattern = pattern;
+        this.compiledPattern = Pattern.compile(pattern);
     }
 
     @Override
     public Matcher getMatcher(String input) {
-        Matcher matcher = Pattern.compile(this.pattern).matcher(input);
-
-        if (matcher.matches()) {
-            return matcher;
-        }
-        return null;
+        Matcher matcher = this.compiledPattern.matcher(input);
+        return matcher.matches() ? matcher : null;
     }
 }

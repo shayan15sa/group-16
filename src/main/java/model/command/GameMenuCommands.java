@@ -15,19 +15,15 @@ public enum GameMenuCommands implements Command {
     GEM_WALLET("^menu gem-wallet$"),
     CHEAT_ADD("^menu cheat add\\s+(?<n>\\S+)\\s+(?<type>\\S+)$");
 
-    private final String pattern;
+    private final Pattern compiledPattern;
 
     GameMenuCommands(String pattern) {
-        this.pattern = pattern;
+        this.compiledPattern = Pattern.compile(pattern);
     }
 
     @Override
     public Matcher getMatcher(String input) {
-        Matcher matcher = Pattern.compile(this.pattern).matcher(input);
-
-        if (matcher.matches()) {
-            return matcher;
-        }
-        return null;
+        Matcher matcher = this.compiledPattern.matcher(input);
+        return matcher.matches() ? matcher : null;
     }
 }
